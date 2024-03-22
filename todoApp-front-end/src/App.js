@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Task from './Components/Task';
 import CreateTask from './Components/CreateTask';
@@ -14,43 +15,40 @@ import moment from 'moment';
 const URL = 'http://10.0.2.2:3000/todo';
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
 
   async function fetchData() {
     await axios.get(URL).then(response => {
+      setLoading(false);
       setList(response.data);
-      /* console.log(response.data); */
     });
   }
   const [text, setText] = useState('');
-
-  /* {text: 'Çöp Dökülecek', completed: false},
-  {text: 'Oda toplanacak', completed: false},
-  {text: 'Markete gidilecek', completed: false}, */
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleAddTodoPress = () => {
-    setList([...list, {text: text, completed: false}]);
+    setList([...list, {todoDescription: text, todoComplete: false}]);
     setText('');
     var throwDate = moment()
-      .utcOffset('+05:30')
+      .utcOffset('+03:00')
       .format('YYYY-MM-DD hh:mm:ss a');
 
-    /* axios
+    axios
       .post(URL, {
         todoDescription: text,
         todoComplete: false,
         date: throwDate,
       })
       .then(function (response) {
-        console.log(response);
+        /* console.log(response); */
       })
       .catch(function (error) {
         console.log(error);
-      }); */
+      });
   };
 
   const deleteTodoLongPress = index => {
@@ -79,10 +77,13 @@ function App() {
   const toggleTaskCompletion = index => {
     const newList = [...list];
     const todoId = list[index]._id;
-    newList[index].todoComplete = !newList[index].todoComplete;
+    const todoCompleteCheck = list[index].todoComplete;
+    list[index].todoComplete = !todoCompleteCheck; 
     setList(newList);
     axios
-      .put(`${URL}/${todoId}`)
+      .put(`${URL}/${todoId}`, {
+        todoComplete: !todoCompleteCheck,
+      })
       .then(response => {
         console.log(response.data);
       })
@@ -100,17 +101,21 @@ function App() {
         <Text style={styles.countOfTask}>{activeTasksCount}</Text>
       </View>
       <View style={styles.taskList}>
-        <FlatList
-          data={list}
-          renderItem={({item, index}) => (
-            <Task
-              text={item.todoDescription}
-              completed={item.todoComplete}
-              onPress={() => toggleTaskCompletion(index)}
-              deleteTask={() => deleteTodoLongPress(index)}
-            />
-          )}
-        />
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <FlatList
+            data={list}
+            renderItem={({item, index}) => (
+              <Task
+                text={item.todoDescription}
+                todoComplete={item.todoComplete}
+                onPress={() => toggleTaskCompletion(index)}
+                deleteTask={() => deleteTodoLongPress(index)}
+              />
+            )}
+          />
+        )}
       </View>
       <CreateTask
         value={text}
