@@ -49,18 +49,20 @@ function App() {
       .catch(function (error) {
         console.log(error);
       });
+      fetchData();
+
   };
 
   const deleteTodoLongPress = index => {
     const confirmDelete = () => {
-      const todoId = list[index]._id;
+      const todoId = list[index].id;
       const newList = [...list];
       newList.splice(index, 1);
       setList(newList);
       axios
         .delete(`${URL}/${todoId}`)
         .then(function (response) {
-          console.log(response);
+          /* console.log(response); */
         })
         .catch(function (error) {
           console.log(error);
@@ -76,10 +78,11 @@ function App() {
 
   const toggleTaskCompletion = index => {
     const newList = [...list];
-    const todoId = list[index]._id;
+    const todoId = list[index].id;
     const todoCompleteCheck = list[index].todoComplete;
-    list[index].todoComplete = !todoCompleteCheck; 
+    list[index].todoComplete = !todoCompleteCheck;
     setList(newList);
+
     axios
       .put(`${URL}/${todoId}`, {
         todoComplete: !todoCompleteCheck,
