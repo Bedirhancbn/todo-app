@@ -14,7 +14,7 @@ const CreateTask = props => {
       <View>
         <TextInput
           style={styles.textInput_color}
-          placeholder="Yapılacak..."
+          placeholder="Add Todo"
           placeholderTextColor={'#808080'}
           value={props.value}
           onChangeText={props.onChangeText}
@@ -27,7 +27,7 @@ const CreateTask = props => {
           style={
             props.value.length > 0 ? styles.notEmpty_buton : styles.empty_buton
           }>
-          <Text style={styles.buton_text}>Kaydet</Text>
+          <Text style={styles.buton_text}>Save</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

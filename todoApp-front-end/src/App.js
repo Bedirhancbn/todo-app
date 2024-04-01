@@ -88,7 +88,7 @@ function App() {
         todoComplete: !todoCompleteCheck,
       })
       .then(response => {
-        console.log(response.data);
+        /* console.log(response.data); */
       })
       .catch(error => {
         console.log(error);
@@ -100,7 +100,7 @@ function App() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text style={styles.text_title}>Yapılacaklar</Text>
+        <Text style={styles.text_title}>Todo</Text>
         <Text style={styles.countOfTask}>{activeTasksCount}</Text>
       </View>
       <View style={styles.taskList}>
