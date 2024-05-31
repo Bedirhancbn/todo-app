@@ -11,15 +11,13 @@ import styles from './CreateTask.style';
 const CreateTask = props => {
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <TextInput
-          style={styles.textInput_color}
-          placeholder="Add Todo"
-          placeholderTextColor={'#808080'}
-          value={props.value}
-          onChangeText={props.onChangeText}
-        />
-      </View>
+      <TextInput
+        style={styles.textInput_color}
+        placeholder="Add Todo"
+        placeholderTextColor={'#808080'}
+        value={props.value}
+        onChangeText={props.onChangeText}
+      />
       <View style={styles.seperator} />
       <View>
         <TouchableOpacity
